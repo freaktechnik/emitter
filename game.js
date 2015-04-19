@@ -77,7 +77,7 @@ function sign(i) {
 }
 
 function lineBetweenEntities(entityA, entityB) {
-    var halfUnit = this.UNIT/2;
+    var halfUnit = Game.UNIT/2;
     var Ax = entityA.x,
         Ay = entityA.y,
         Bx = entityB.x,
@@ -780,10 +780,10 @@ var Game = {
         this.ctx.fill();
     },
     canMoveTo: function(x, y, entity) {
-        hasEntity = this.enemies.some(function(enemy) {
+        var hasEntity = this.enemies.some(function(enemy) {
             return enemy.collidesWith(x, y, entity.width, entity.height);
         });
-        hasWall = this.stage.walls.some(function(wall) {
+        var hasWall = this.stage.walls.some(function(wall) {
             return wall.collidesWith(x, y, entity.width, entity.height);
         });
         return !hasEntity &&
