@@ -286,7 +286,7 @@ var Player = {
             this.blastWaveRadius = (timestamp - this.blastWaveStart) * velocity;
         }
     },
-    getFacingSide(x, y, width, height) {
+    getFacingSide: function(x, y, width, height) {
         // Todo respect the smaller side, if it's facing the player (the player is not withing the wall's ends)
         var rx, ry, rw = 0, rh = 0, cw = false, ch = false;
         if(x < this.x) {
