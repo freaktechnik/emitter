@@ -948,9 +948,28 @@ var Stages = [
             new Wall(21, gh - 21, 15, gh - 20)
         ]
     }),
-    // Always the last one
     new Stage({
         number: 8,
+        title: "Use Your Charges Wisely",
+        shots: 2,
+        enemies: [
+            new Enemy(xc - 5, 5),
+            new Enemy(xc + 5, 5)
+        ],
+        walls: [
+            new Wall(0, 0, gw, 1),
+            new Wall(0, 0, 1, gh),
+            new Wall(gw, 0, gw - 1, gh),
+            new Wall(gw, gh, 0, gh - 1),
+            new Wall(xc, 0, xc - 1, 11, true),
+            new Wall(xc + 11, 10, xc - 11, 11, true),
+            new Wall(xc + 10, 0, xc + 11, 10),
+            new Wall(xc - 10, 0, xc - 11, 10)
+        ]
+    }),
+    // Always the last one
+    new Stage({
+        number: 9,
         title: "Impossible",
         enemies: [
             new Enemy( -5, -5)
