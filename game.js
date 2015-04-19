@@ -40,14 +40,14 @@ var summer, bummer, startWummer, stopWummer;
 
 summerSfx.addEventListener("canplaythrough", function() {
     summer = function() {
-        summerSfx.fastSeek(0);
+        summerSfx.currentTime = 0;
         summerSfx.play();
     };
 });
 
 bummerSfx.addEventListener("canplaythrough", function() {
     bummer = function() {
-        bummerSfx.fastSeek(0);
+        bummerSfx.currentTime = 0;
         bummerSfx.play();
     };
 });
@@ -55,7 +55,7 @@ bummerSfx.addEventListener("canplaythrough", function() {
 wummerSfx.addEventListener("canplaythrough", function() {
     wummerSfx.loop = true;
     startWummer = function() {
-        wummerSfx.fastSeek(0);
+        wummerSfx.currentTime = 0;
         wummerSfx.play();
     };
     stopWummer = function() {
@@ -345,7 +345,7 @@ var Game = {
 
         this.keyboardInputHandler = this.keyboardInputHandler.bind(this);
 
-        ctx.addEventListener("keypress", this.keyboardInputHandler);
+        ctx.addEventListener("keydown", this.keyboardInputHandler);
         ctx.addEventListener("click", this.clickHandler);
         ctx.focus();
 
@@ -377,19 +377,20 @@ var Game = {
         event.preventDefault();
 
         if(!this.loading && !this.win && !this.gameOver) {
-            if(event.key == "ArrowLeft" || event.charCode == 37) {
+            var code = event.keyCode || event.charCode;
+            if(event.key == "ArrowLeft" || code == 37) {
                 Player.move(-1, 0);
             }
-            else if(event.key == "ArrowUp" || event.charCode == 38) {
+            else if(event.key == "ArrowUp" || code == 38) {
                 Player.move(0, -1);
             }
-            else if(event.key == "ArrowRight" || event.charCode == 39) {
+            else if(event.key == "ArrowRight" || code == 39) {
                 Player.move(1, 0);
             }
-            else if(event.key == "ArrowDown" || event.charCode == 40) {
+            else if(event.key == "ArrowDown" || code == 40) {
                 Player.move(0, 1);
             }
-            else if(event.key == " " || event.charCode == 32) {
+            else if(event.key == " " || code == 32) {
                 Player.useWeapon()
             }
         }
