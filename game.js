@@ -77,7 +77,6 @@ function sign(i) {
 }
 
 function lineBetweenEntities(entityA, entityB) {
-    var halfUnit = Game.UNIT/2;
     var Ax = entityA.x,
         Ay = entityA.y,
         Bx = entityB.x,
@@ -345,7 +344,7 @@ var Game = {
 
         this.keyboardInputHandler = this.keyboardInputHandler.bind(this);
 
-        ctx.addEventListener("keydown", this.keyboardInputHandler);
+        ctx.addEventListener("keydown", this.keyboardInputHandler, true);
         ctx.addEventListener("click", this.clickHandler);
         ctx.focus();
 
@@ -376,7 +375,7 @@ var Game = {
     keyboardInputHandler: function(event) {
         event.preventDefault();
 
-        if(!this.loading && !this.win && !this.gameOver) {
+        if(!this.loading && !this.win && !this.gameOver && Player.alive) {
             var code = event.keyCode || event.charCode;
             if(event.key == "ArrowLeft" || code == 37) {
                 Player.move(-1, 0);
@@ -391,8 +390,11 @@ var Game = {
                 Player.move(0, 1);
             }
             else if(event.key == " " || code == 32) {
-                Player.useWeapon()
+                Player.useWeapon();
             }
+        }
+        else if((this.gameOver || !Player.alive) && event.key == " ") {
+            this.retry();
         }
     },
     clickHandler: function(event) {
@@ -417,6 +419,12 @@ var Game = {
         this.ctx.fillText(text, this.WIDTH/2, this.HEIGHT/2, this.WIDTH);
         this.ctx.shadowOffsetX = 0;
         this.ctx.shadowOffsetY = 0;
+    },
+    retry: function() {
+        Player.shots = 0;
+        Game.gameOver = false;
+        Player.alive = true;
+        Game.loadStage(Game.stage);
     },
     render: function(timestamp) {
         this.buttons.length = 0;
@@ -487,10 +495,7 @@ var Game = {
                 this.ctx.shadowOffsetX = -1;
                 this.ctx.shadowOffsetY = 1;
                 this.printButton(this.WIDTH/2, this.HEIGHT/2 + 55, "Retry", function() {
-                    Player.shots = 0;
-                    Game.gameOver = false;
-                    Player.alive = true;
-                    Game.loadStage(Game.stage);
+                    Game.retry();
                 });
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
@@ -507,10 +512,7 @@ var Game = {
                 this.ctx.shadowOffsetX = -1;
                 this.ctx.shadowOffsetY = 1;
                 this.printButton(this.WIDTH/2, this.HEIGHT/2 + 55, "Retry", function() {
-                    Player.shots = 0;
-                    Game.gameOver = false;
-                    Player.alive = true;
-                    Game.loadStage(Game.stage);
+                    Game.retry();
                 });
                 this.ctx.shadowOffsetX = 0;
                 this.ctx.shadowOffsetY = 0;
@@ -542,6 +544,18 @@ var Game = {
             this.ctx.font = "30px "+this.FONT;
 
             this.ctx.fillText("Charges: "+Player.shots, this.WIDTH - this.UNIT, this.UNIT);
+
+            // Print remaining squares
+            this.ctx.shadowColor = "#061B40";
+            this.ctx.shadowOffsetX = -2;
+            this.ctx.shadowOffsetY = 2;
+            this.ctx.textAlign = "right";
+            this.ctx.textBaseline = "top";
+            this.ctx.fillStyle = "#7AE3FA";
+            this.ctx.font = "30px "+this.FONT;
+
+            var remainingSquares = Game.enemies.filter(function(enemy) { return enemy.alive }).length;
+            this.ctx.fillText("Squares: "+remainingSquares, this.WIDTH - this.UNIT, (this.UNIT * 2) + 30);
 
             this.ctx.shadowOffsetX = 0;
             this.ctx.shadowOffsetY = 0;
