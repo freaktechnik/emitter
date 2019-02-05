@@ -40,14 +40,14 @@ var summer, bummer, startWummer, stopWummer;
 
 summerSfx.addEventListener("canplaythrough", function() {
     summer = function() {
-        summerSfx.currentTime = 0;
+        summerSfx.fastSeek(0);
         summerSfx.play();
     };
 });
 
 bummerSfx.addEventListener("canplaythrough", function() {
     bummer = function() {
-        bummerSfx.currentTime = 0;
+        bummerSfx.fastSeek(0);
         bummerSfx.play();
     };
 });
@@ -55,7 +55,7 @@ bummerSfx.addEventListener("canplaythrough", function() {
 wummerSfx.addEventListener("canplaythrough", function() {
     wummerSfx.loop = true;
     startWummer = function() {
-        wummerSfx.currentTime = 0;
+        wummerSfx.fastSeek(0);
         wummerSfx.play();
     };
     stopWummer = function() {
